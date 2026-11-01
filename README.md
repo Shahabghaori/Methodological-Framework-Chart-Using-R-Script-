@@ -17,7 +17,7 @@ library(ggplot2)
 library(grid)
 
 # ------------------------------------------------------------
-# 1. SETTINGS  (all sizes in points on the final page)
+# 1. SETTINGS 
 # ------------------------------------------------------------
 PAGE_W_IN <- 9.5            # figure width in inches
 DPI       <- 300            # PNG resolution
@@ -41,7 +41,7 @@ ARW <- arrow(length = unit(3.8, "pt"), angle = 28, type = "closed")
 W <- PAGE_W_IN * 72         # canvas width in points
 
 # ------------------------------------------------------------
-# 2. BOX STYLES  (size = font size in pt on the page)
+# 2. BOX STYLES 
 # ------------------------------------------------------------
 STY <- list(
   root = list(fill="#263238", border="#263238", txt="white", size=12,  face="bold"),
@@ -55,7 +55,7 @@ STY <- list(
 )
 
 # ------------------------------------------------------------
-# 3. PAGE GRID (x positions of the two panels)
+# 3. PAGE GRID 
 # ------------------------------------------------------------
 BW      <- (W - 2 * MARGIN - GUTTER) / 2          # panel width
 PX      <- list(c(MARGIN, MARGIN + BW),            # panel 1 (left)
@@ -71,7 +71,7 @@ half <- function(b, side) if (side == "L") c(PX[[b]][1], PX[[b]][1] + HALF) else
 ctr  <- function(b, w) c(mean(PX[[b]]) - w / 2, mean(PX[[b]]) + w / 2)
 
 # ------------------------------------------------------------
-# 4. BOXES   (row = vertical slot; boxes in one row share a height)
+# 4. BOXES   
 # ------------------------------------------------------------
 B <- function(id, style, label, row = NA, xr, size = NULL) {
   s <- STY[[style]]
@@ -85,7 +85,7 @@ H_X <- c(PX[[1]][1], PX[[1]][1] + 192)             # inventory boxes
 V_X <- c(PX[[1]][1] + 202, PX[[1]][2])             # validation box
 
 boxes <- rbind(
-  # ================= PANEL 1 (rows 1-10) =================
+  # ================= PANEL 1 =================
   B("root", "root", "Methodological\nFramework", 1, ctr(1, 150)),
   B("data", "sec",  "Data", 2, ctr(1, 150)),
   B("pre",  "l2",   "Data Preprocessing", 3, ctr(1, 220)),
@@ -120,7 +120,7 @@ boxes <- rbind(
     "Runoff composition,\nglacier and snow change,\ndynamic hazard drivers",
     10, col(1, 3)),
 
-  # ================= PANEL 2 (rows 11-22) =================
+  # ================= PANEL 2  =================
   # ---- WP3
   B("wp3", "sec", "WP3  Single-hazard Susceptibility", 11, ctr(2, 230)),
   B("stat", "mid",
@@ -175,7 +175,7 @@ boxes <- rbind(
 )
 
 # ------------------------------------------------------------
-# 5. AUTOMATIC VERTICAL LAYOUT (each panel stacks independently)
+# 5. AUTOMATIC VERTICAL LAYOUT 
 # ------------------------------------------------------------
 boxes$n <- vapply(strsplit(boxes$label, "\n", fixed = TRUE), length, 1L)
 boxes$h <- boxes$n * boxes$size * LH + 2 * PADV
@@ -224,7 +224,7 @@ H_IN <- H / 72
 W_IN <- PAGE_W_IN
 
 # ------------------------------------------------------------
-# 6. TEXT-FIT CHECK (uses the real font metrics of your system)
+# 6. TEXT-FIT CHECK 
 # ------------------------------------------------------------
 check_fit <- function(df) {
   tmp <- tempfile(fileext = ".png")
@@ -252,7 +252,7 @@ check_fit <- function(df) {
 check_fit(boxes)
 
 # ------------------------------------------------------------
-# 7. CONNECTORS (built from box positions - nothing hard-coded)
+# 7. CONNECTORS 
 # ------------------------------------------------------------
 S <- function(x, y, xend, yend, arrow = FALSE)
   data.frame(x = x, y = y, xend = xend, yend = yend, arrow = arrow)
@@ -303,8 +303,8 @@ connectors <- rbind(
 divider <- data.frame(x = W / 2, xend = W / 2, y = MARGIN, yend = H - MARGIN)
 
 # ------------------------------------------------------------
-# 8. DRAW  (1 plot unit = 1 point on the page)
-# ------------------------------------------------------------
+# 8. DRAW  
+# -----------------------------------------------------------
 p <- ggplot() +
   geom_segment(data = divider, aes(x = x, y = y, xend = xend, yend = yend),
                colour = "#C8C8C8", linewidth = 0.25, linetype = "dashed") +
